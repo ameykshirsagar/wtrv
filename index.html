@@ -1,0 +1,663 @@
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css" />
+<link href="./css/fonts/css/font-awesome.min.css" rel="stylesheet">
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/sqlite.js"></script>
+<script type="text/javascript" src="./js/ajaxupload.3.5.js" ></script>
+
+<script>
+/*
+$(".thisBookList").live("click",function(e)
+{
+	e.stopPropagation();
+	var thisBookInfoId = $(this).find(".bookInfoListId").html();
+	alert(thisBookInfoId);
+	$("#updateBookInfoId").val(thisBookInfoId);
+	loadBookInfoRecord(thisBookInfoId);
+	$.mobile.changePage("#updateBook");
+	
+	
+});
+*/
+</script>
+<body>
+
+<!-- -------------------------------------- Sign In --------------------------------------->
+
+<div data-role="page" id="front">
+  <div data-role="header">
+  	<h1>Writer's Voice</h1>
+  </div>
+  <div data-role="content">
+	<div class="frontLogo">
+		<img src="./images/logo.png"/>
+	</div>
+	<div class="frontControl" style="text-align:center;">
+		<a href="#newBook" class="brownButton" data-role="button" data-inline="true">Write A New Book</a>
+		<br>
+		<a href="#listBook" class="brownButton" data-role="button" data-inline="true">Update Existing Book</a>
+	</div>
+  </div>	
+  <div data-role="footer" data-position="fixed">
+	 <div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>  
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+<div data-role="page" id="updateBook">
+  <div data-role="header">
+  	<a href="#listBook" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>Update Book</h1>
+  	
+  </div>
+  <div data-role="content">
+	<input type="text"  id="updateBookInfoId" class="hiddenInput">
+	<label for="title">Title:</label>
+	<input type="text" name="title" id="updateTitle">
+	<label for="subTitle">Subtitle:</label>
+	<input type="text" name="subTitle" id="updateSubTitle">
+	<label for="genre">Genre:</label>
+	<input type="text" name="genre" id="updateGenre">
+	<label for="audience">Audience:</label>
+	<input type="text" name="audience" id="updateAudience">
+	<label for="synopsis">Synopsis:</label>
+	<textarea id="updateSynopsis" style="height:150px"></textarea>
+	<label for="mainCharacter">Main Characters:</label>
+	<textarea id="updateMainCharacter" style="height:150px"></textarea>
+	<a href="#" class="brownButtonPage" data-role="button" data-inline="true" id="updateBookInfoSave">Update</a>
+	<a href="#" class="brownButtonPage" data-role="button" data-inline="true" id="updateBookInfoCancel">Cancel</a>
+  </div>	
+   <div data-role="footer" data-position="fixed" >
+		<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>  
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div> 
+	 </div>
+</div>
+
+<div data-role="page" id="newBook">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>New Book</h1>
+  </div>
+  <div data-role="content">
+	<label for="title">Title:</label>
+	<input type="text" name="title" id="newTitle">
+	<label for="subTitle">Subtitle:</label>
+	<input type="text" name="subTitle" id="newSubTitle">
+	<label for="genre">Genre:</label>
+	<input type="text" name="genre" id="newGenre">
+	<label for="audience">Audience:</label>
+	<input type="text" name="audience" id="newAudience">
+	<label for="synopsis">Synopsis:</label>
+	<textarea id="newSynopsis" style="height:150px"></textarea>
+	<label for="mainCharacter">Main Characters:</label>
+	<textarea id="newMainCharacter" style="height:150px"></textarea>
+	<a href="#" class="brownButtonPage" data-role="button" data-inline="true" id="newBookInfoSave">Save</a>
+	<a href="#" class="brownButtonPage" data-role="button" data-inline="true" id="newBookInfoReset">Cancel</a>
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div> 
+ </div>
+</div>
+
+<div data-role="dialog" id="deleteBookPopup" >
+	<input type="text" class="hiddenInput" id="deleteBookId" value="">
+	<p>Are You Sure You Want To Delete This Book ?<p>
+	<a href="" class="brownButtonPage" data-role="button" data-inline="true" id="deleteBookConfirm">Delete</a>
+	<a href="" class="brownButtonPage" data-role="button" data-inline="true" id="deleteBookCancel">Cancel</a>
+</div>
+
+<div data-role="page" id="listBook">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>My Books</h1>
+  </div>
+  <div data-role="content">
+	  <ul data-role="listview" id="resultsBookInfo">
+		   <!--  Book Info Goes Here -->
+	  </ul>
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+<style>
+
+#resultsImageInfo 
+{
+	margin-left:1%;
+	
+}
+
+#resultsImageInfo li
+{
+	margin-left:1%;
+	margin-bottom:10px;
+	width:10%;
+	height:100px;
+	float:left;
+	cursor:pointer;
+}
+
+#resultsImageInfo li img
+{
+	width:100%;
+	height:125px;
+	max-height:none !important;
+	max-width:none !important;
+	
+}
+
+.imageControl
+{
+	position:absolute;
+	left:0px;
+	top:85px;
+	height:40px;
+	background-color:rgba(86,48,15,0.5);
+	width:100%;
+	text-align:right !important;
+}
+
+.imageInfoListWrite,.imageInfoListUpdate,.imageInfoListDelete
+{
+	border:1px solid #eadece;
+	border-radius:5px; 
+	width:30px  !important;
+	height:20px !important;
+	text-align:center;
+	display:inline-block;
+	padding-top:8px;
+	margin-right:3px !important;
+	margin-top:5px;
+	border:1px solid #eadece;
+	color:#eadece;
+}
+
+.imageInfoListWrite:hover,.imageInfoListUpdate:hover,.imageInfoListDelete:hover
+{
+	background-color:#eadece;
+	color:#56300F;
+}
+
+.imageControl
+{
+	display:none;
+}
+</style>
+<script type="text/javascript" src="./js/ajaxupload.3.5.js" ></script>
+	<script type="text/javascript" >
+	$(document).ready(function()
+	{
+		$('.imageItem').live("hover",function()
+		{
+			$(this).children(".imageControl").css("display","block");
+		});
+		
+		$('.imageItem').live("mouseleave",function()
+		{
+			$(this).children(".imageControl").css("display","none");
+		});
+	})
+	
+	$(function(){
+		var btnUpload=$('#me');
+		
+		new AjaxUpload(btnUpload, {
+			action: 'http://www.kodkillerz.com/Book/uploadPhoto.php',
+			async:true,
+			name: 'uploadfile',
+			onSubmit: function(file, ext)
+			{
+				 if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext)))
+				 { 
+					return false;
+				 }
+			},
+			onComplete: function(file, response)
+			{
+				
+				if(response!="")
+				{
+					$("#imageName").val(response);
+					insertImage();
+				} 
+				else
+				{
+			
+				}
+			}
+		});
+		
+	});
+</script>
+<div data-role="page" id="listImage">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>My Images</h1>
+  </div>
+ 
+  <div data-role="content">
+  	  
+ 	   <input type="text" id="imageName" name="imageName" value=""  style="display:none"/> 
+       <!-- <div id="me" class="styleall" style=" cursor:pointer;" >
+ 	   			Upload Photo
+  	   </div>-->
+  	   <a href="#" class="brownButtonPage" data-role="button" data-inline="true" id="me">Add Image</a>
+       <!-- <span id="mestatus" >
+       
+       </span> -->
+	  <ul data-role="listview" id="resultsImageInfo" style="margin-top:50px;">
+		  
+		  
+	  </ul>
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="images" data-icon="custom" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+<div data-role="page" id="myPopupDialog" data-dialog="true">
+  <div data-role="header">
+    <h1>Confirmation</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <h2>Are you sure you want to delete the book <i class="bookNameConfirmation"></i>?</h2>
+    <i class="bookIdConfirmation" style="display:none"></i>
+    <a href="#" data-role="button" data-inline="true" class="brownButtonPage sureConfirmation" data-rel="back">
+    Sure
+    </a>
+    <a href="#" data-role="button" data-inline="true" class="brownButtonPage cancelConfirmation" data-rel="back">
+    Cancel
+    </a>
+  </div>
+ </div>
+ 
+ <div data-role="page" id="myImagePopupDialog" data-dialog="true">
+  <div data-role="header">
+    <h1>Confirmation</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <h2>Are you sure you want to delete this image?</h2>
+    <i class="imageIdConfirmation" style="display:none"></i>
+    <a href="#" data-role="button" data-inline="true" class="brownButtonPage sureImageConfirmation" data-rel="back">
+    Sure
+    </a>
+    <a href="#" data-role="button" data-inline="true" class="brownButtonPage cancelImageConfirmation" data-rel="back">
+    Cancel
+    </a>
+  </div>
+ </div>
+ 
+ 
+<div data-role="page" id="listNote">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>My Notes</h1>
+  </div>
+  <div data-role="content">
+	  <ul data-role="listview" id="messageList">
+		   <li class="thisBookList" id="">
+		  	 
+		  		<img class="bookImage" src="images/logo.png"/><br>
+		  	
+		  		<div class="ui-block-b" style="margin-left:0%">
+				  	<span>Note Title</span><br>
+				  	<span>lorem ipsum dolor sit amet...</span>
+				</div>
+		  </li>
+		 
+	  </ul>
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+<div data-role="page" id="write">
+  <div data-role="header">
+  <a href="#listBook" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>Write</h1>
+  	<a href="" class="brownButtonSmall" data-role="button" data-inline="true" id="writeBookInfoSaveSmall"><i class="fa fa-save"></i></a>
+  </div>
+  <div data-role="content">
+  	 <input type="text"  id="writeBookInfoId" class="hiddenInput">
+	 <label for="synopsis">Write:</label>
+	 <textarea id="writeText" style="height:450px"></textarea>
+	 <a href="" class="brownButtonPage" data-role="button" data-inline="true" id="writeBookInfoSave">Save</a>
+	 <a href="" class="brownButtonPage" data-role="button" data-inline="true" id="writeBookInfoPlay">Start Reading</a>
+	 <a href="" class="brownButtonPage" data-role="button" data-inline="true" id="writeBookInfoPlayOn" style="display:none">Play</a>
+	 <a href="" class="brownButtonPage" data-role="button" data-inline="true" id="writeBookInfoPause" style="display:none">Pause</a>
+	 
+	 
+	 <div id="speech">
+	 </div>
+	 
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+<div data-role="page" id="research">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>Research</h1>
+  	<a href="" class="brownButtonSmall" data-role="button" data-inline="true" id="writeNoteInfoSaveSmall"><i class="fa fa-save"></i></a>
+  </div>
+  <div data-role="content">
+	 <label for="synopsis">Notes:</label>
+	 <textarea id="noteText" style="height:500px"></textarea>
+	 <a href="" class="brownButtonPage" data-role="button" data-inline="true" id="writeNoteInfoSave">Save</a>
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li> 
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+
+<div data-role="page" id="settings">
+  <div data-role="header">
+  <a href="#front" class="brownButtonSmall" data-role="button" data-inline="true"><i class="fa fa-arrow-left"></i></a>
+  	<h1>Settings</h1>
+  	<a href="#front" class="brownButtonSmall" data-role="button" data-inline="true" id="writeSettingInfoSaveSmall"><i class="fa fa-save"></i></a>
+  </div>
+  <div data-role="content">
+		 <label for="voiceSetting" class="select">Voice</label>
+		<select name="voiceSetting" id="voiceSetting" data-mini="true">
+		   <option value="2">American Female</option>
+		</select> 
+  </div>	
+  <div data-role="footer" data-position="fixed" >
+	<div data-role="navbar"  data-grid="d" style="margin:0 auto;text-align:center" > 
+	        <ul style="">  
+	            <li><a href="#listBook" id="rent" data-icon="search" class="brownButtonFooter"><i class="fa fa-book fa-2x"></i><br><br>Books</a></li> 
+	            <li><a href="#research" id="contacts" data-icon="star" class="brownButtonFooter"><i class="fa fa-eye fa-2x"></i><br><br>Research</a></li>
+	            <li><a href="#listImage" id="image" data-icon="star" class="brownButtonFooter"><i class="fa fa-camera fa-2x"></i><br><br>Images</a></li>  
+	            <li><a href="#settings" id="voicemail" data-icon="custom" class="brownButtonFooter" ><i class="fa fa-gear fa-2x"></i><br><br>Settings</a></li>
+	        </ul> 
+	    </div>
+ </div>
+</div>
+
+	
+
+<!-- -------------------------------------- MAIN MENU --------------------------------------->
+<!-- 
+<div id="menu" style="display: none;">
+	<h3>Menu</h3>
+	<a href="#front" data-role="button" data-inline="true">Home</a>
+	<ul>
+		<li class="active"><a href="#home" class="contentLink">Home</a></li>
+		<li><a href="#chat" data-rel="dialog" class="contentLink">Chat </a><span class="notification" id="newMessageNotification">10</span></li>
+		<li><a href="#message" class="contentLink">Message </a><span class="notification" id="newFollowerNotification">10</span></li>
+		<li><a href="#follower" class="contentLink">Followers</a></li>
+		<li><a href="#following" class="contentLink">Following</a></li>
+		<li><a href="#profile" class="contentLink">Profile</a></li>
+		<li><a href="#search" class="contentLink">Search</a></li>
+		<li><a href="#login" id="signout" class="contentLink">Sign Out</a></li>
+	</ul>
+</div>
+ -->
+<!-- -------------------------------------- MAIN MENU --------------------------------------->
+
+</body>
+<style>
+
+div[data-role="header"],div[data-role="footer"],div[data-role="dialog"]
+{
+	background-image:-webkit-linear-gradient(#987654,#56300F); !important;
+	border-color:#56300F !important;
+	color:#eadece !important;
+	text-shadow:none !important;
+	font-weight:bold;
+	
+}
+
+div[data-role="page"]
+{
+	background-image:-webkit-linear-gradient(#eadece,#eadece); !important;
+	
+	/*542500*/
+}
+
+div[data-role="content"]
+{
+	padding:20px; 
+	/*542500*/
+}
+
+.brownButton
+{
+	background:#56300F;
+	color:#eadece !important;
+	font-weight:bold;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-radius:8px;
+	border-color:#56300F !important;
+	width:70%;
+	min-width:300px;
+	text-shadow:none;
+}
+
+.brownButton:hover
+{
+	opacity:0.5;
+}
+
+.brownButtonSmall:hover
+{
+	opacity:0.5;
+}
+
+.brownButtonSmall
+{
+	background:#56300F;
+	color:#eadece !important;
+	font-weight:bold;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-radius:8px;
+	border-color:#56300F !important;
+	width:5%;
+	min-width:50px;
+	margin-top:5px;
+	text-shadow:none;
+}
+
+.brownButtonPage
+{
+	background:#56300F;
+	color:#eadece !important;
+	font-weight:bold;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-radius:8px;
+	border-color:#56300F !important;
+	min-width:150px;
+	margin-top:5px;
+	text-shadow:none;
+}
+
+.brownButtonPage:hover
+{
+	opacity:0.5;	
+}
+.frontLogo
+{
+	border:2px solid #56300F;
+	border-radius:10px;
+	width:200px;
+	
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.frontLogo img
+{
+	width:100%;
+}
+
+.frontControl
+{
+	margin-top:150px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+label
+{
+	color:#56300F !important;
+	text-shadow:none !important;
+	font-weight:bold !important;	
+}
+
+
+
+.brownButtonFooter
+{
+
+	color:#eadece !important;
+	background-image: linear-gradient(#987654,#56300F);
+	margin-top:5px;
+	text-shadow:none;
+	border-right: 1px solid black !important;
+}
+
+.ui-grid-d li
+{
+	width:25% !important;
+}
+
+.thisBookList
+{
+	border-radius:5px !important;
+	text-align:left;
+	cursor:pointer;
+	color:#eadece !important;
+	text-shadow:none;
+	background-image: linear-gradient(#eeeeee,#56300F);
+	border:1px solid #56300F;
+	height:70px;
+	margin-top:5px;
+}
+.thisBookList:hover
+{
+	opacity:0.5;
+}
+.bookImage
+{
+	width:10% !important;
+	height:100%;
+	float:left;
+	margin-top:10px;
+	margin-left:10px;
+}
+.brownButtonFooter:hover
+{
+	opacity:0.5;
+}
+
+.bookList
+{
+	margin-top:-20px;
+}
+
+.bookInfoListId
+{
+	display:none;
+}
+
+.bookInfoListWrite,.bookInfoListUpdate,.bookInfoListDelete
+{
+	border:1px solid #eadece;
+	border-radius:5px; 
+	width:30px  !important;
+	height:20px !important;
+	text-align:center;
+	display:inline-block;
+	padding-top:8px;
+	margin-left:3px !important;
+}
+
+.bookInfoListWrite:hover,.bookInfoListUpdate:hover,.bookInfoListDelete:hover
+{
+	background-color:#eadece;
+	color:#56300F;
+}
+
+.ui-icon
+{
+	display:none;
+}
+
+.hiddenInput
+{
+	display:none !important;
+}
+
+</style>
+<script>
+
+
+
+</script>
